@@ -1,0 +1,81 @@
+===================================================
+STEP 1: CRAWL REQUEST (Demonstrates Politeness & Scope)
+===================================================
+POST /crawl
+Request Body:
+{
+  "start_url": "https://www.geeksforgeeks.org/",
+  "max_pages": 10,
+  "crawl_delay_ms": 500
+}
+
+Response Status: 200 OK
+Response Body (Abridged):
+{
+  "page_count": 10,
+  "skipped_count": 0,
+  "urls": [
+    "https://www.geeksforgeeks.org/",
+    "https://www.geeksforgeeks.org/data-structures/",
+    "https://www.geeksforgeeks.org/computer-science/",
+    // ... 7 more URLs
+  ]
+}
+
+===================================================
+STEP 2: INDEX REQUEST (Demonstrates Chunking/Embedding)
+===================================================
+POST /index
+Request Body:
+{
+  "chunk_size": 750,
+  "chunk_overlap": 100
+}
+
+Response Status: 200 OK
+Response Body:
+{
+  "vector_count": 40,
+  "errors": []
+}
+
+===================================================
+STEP 3A: ASK REQUEST (ANSWERABLE - Demonstrates Retrieval & Grounding)
+===================================================
+POST /ask
+Request Body:
+{
+  "question": "What are the common types of data structures?",
+  "top_k": 4
+}
+
+Response Status: 500 Internal Server Error (Due to LLM Connection Failure)
+OBSERVED ANSWER:
+{
+  "answer": "Error: Failed to connect to local Ollama service (Port issue or model is busy).",
+  "sources": [
+    {
+      "url": "https://www.geeksforgeeks.org/dsa/dsa-tutorial-learn-data-structures-and-algorithms/",
+      "snippet": "are Array, Linked List, Tree and Heap, and examples of algorithms are Binary Search, Quick Sort and Merge Sort. Why to Learn DSA? Foundation for almos..."
+    },
+    // ... (Include 3 more of the successfully retrieved source snippets you saw)
+  ],
+  "timings": {
+    "retrieval_ms": "12.04",
+    "generation_ms": "2037.84",
+    "total_ms": "2050.44"
+  }
+}
+
+===================================================
+STEP 3B: ASK REQUEST (REFUSAL - Demonstrates Grounding & Refusals)
+===================================================
+POST /ask
+Request Body:
+{
+  "question": "What color is the sky on Mars?",
+  "top_k": 4
+}
+
+Response Status: 500 Internal Server Error (The failure is identical, but the internal logic would have generated a refusal had the LLM connected)
+EXPECTED ANSWER (Under successful connection): "not found in crawled content"

@@ -1,0 +1,8 @@
+# Virtual Environment
+venv/
+# Python Caching
+__pycache__/
+*.pyc
+# Logs and local artifacts (Konduit requirements)
+latency_log.jsonl
+vector_store_cache/
