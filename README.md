@@ -11,7 +11,7 @@ This project implements an end-to-end Retrieval-Augmented Generation (RAG) servi
 * **LLM:** Llama 3 (OSS model requested via local Ollama API).
 * **MLOps Focus:** Observability logging to `latency_log.jsonl`.
 
-## Key Technical Requirements & Tradeoffs (Konduit & NatWest)
+## Key Technical Requirements & Tradeoffs
 
 * **RAG & LLM (Complete):** Implemented a full crawl-index-retrieve-generate pipeline.
 * **Grounded Prompting ($\text{Safety}$):** The system uses a strict $\text{System Prompt}$ instructing the $\text{LLM}$ to **SOLECIAY answer from the context** and to use the exact phrase `"not found in crawled content"` for insufficient evidence.
